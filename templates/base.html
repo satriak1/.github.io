@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Seluas Samudra</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="text-center"></div>
+      <div>
+        <div class="logo-container">
+            <i class="fas fa-fish-bubble login-icon"></i>
+            <span class="logo-text">P.T. Seluas Samudra</span>
+        </div>
+        <div style="font-size:0.85rem;opacity:0.9">Sistem Informasi Perikanan</div>
+      </div>
+    </div>
+    <nav>
+      <a class="btn ghost" href="{{ url_for('index') }}">Beranda</a>
+      {% if session.get('user_id') %}
+        <a class="btn ghost" href="{{ url_for('form_ikan_insert') }}">Tambah Ikan</a>
+        {% if session.get('role') == 'admin' %}
+          <a class="btn ghost" href="{{ url_for('form_kategori_insert') }}">Kelola Kategori</a>
+          <a class="btn ghost" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+        <span class="btn ghost">Halo, {{ session.get('username') }}</span>
+        <a class="btn" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="btn" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="card meta" style="border-left:6px solid {% if cat=='danger' %}#ef4444{% elif cat=='success' %}#10b981{% else %}#0ea5a4{% endif %};margin-bottom:12px">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+
+    <footer class="main-footer">
+    <div class="container">
+        <p>&copy; 2025 P.T. Selalu Samudra - All Rights Reserved.</p>
+    </div>
+    </footer>
+    </body>
+</html>

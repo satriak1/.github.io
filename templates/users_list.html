@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Daftar User</h2>
+  <table class="table">
+    <thead><tr><th>ID</th><th>Username</th><th>Role</th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id_user }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.role }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

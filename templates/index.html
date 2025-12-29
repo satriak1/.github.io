@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Daftar Ikan</h2>
+  <p class="meta">Lihat koleksi ikan beserta kategori, harga dan stok.</p>
+  <form method="get" style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+    <input class="input" name="q" placeholder="Cari nama ikan..." value="{{ q }}" style="flex:1">
+    <select class="input" name="kategori" style="width:220px">
+      <option value="">Semua Kategori</option>
+      {% for k in kategori %}
+        <option value="{{ k.id_kategori }}" {% if selected_kategori and selected_kategori == k.id_kategori %}selected{% endif %}>
+          {{ k.nama_kategori }} — {{ k.habitat }}
+        </option>
+      {% endfor %}
+
+    </select>
+    <button class="btn" type="submit">Cari</button>
+    <a class="btn ghost" href="{{ url_for('index') }}">Reset</a>
+  </form>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nama Ikan</th>
+        <th>Kategori</th>
+        <th>Harga (Rp)</th>
+        <th>Stok(Kg)</th>
+        <th>Pengelola</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in ikan %}
+      <tr>
+        <td>{{ item.nama_ikan }}</td>
+        <td>{{ item.nama_kategori }}</td>
+        <td>{{ '{:,.2f}'.format(item.harga) }}</td>
+        <td>{{ item.stok }}</td>
+        <td>{{ item.created_by }}</td>
+        <td>
+          {% if session.get('role') == 'admin' or session.get('user_id') == item.user_id %}
+            <a class="btn ghost" href="{{ url_for('form_ikan_update', id_ikan=item.id_ikan) }}">Edit</a>
+            <a class="btn danger" href="{{ url_for('ikan_delete', id_ikan=item.id_ikan) }}" onclick="return confirm('Hapus ikan ini?')">Hapus</a>
+          {% else %}
+            <span class="meta">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="meta">Belum ada data ikan.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

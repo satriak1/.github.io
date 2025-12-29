@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" style="max-width:720px;margin:0 auto">
+  <h2>Edit Ikan</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label>Nama Ikan</label>
+      <input class="input" name="nama_ikan" value="{{ data.nama_ikan }}" required>
+    </div>
+    <div class="form-group">
+      <label>Kategori</label>
+      <select class="input" name="id_kategori" required>
+        {% for k in kategori %}
+          <option value="{{ k.id_kategori }}" {% if k.id_kategori == data.id_kategori %}selected{% endif %}>{{ k.nama_kategori }} — {{ k.habitat }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <div style="flex:1">
+        <label>Harga (Rp)</label>
+        <input class="input" name="harga" type="number" step="0.01" min="0" value="{{ data.harga }}">
+      </div>
+      <div style="width:150px">
+        <label>Stok</label>
+        <input class="input" name="stok" type="number" min="0" value="{{ data.stok }}">
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn" type="submit">Update</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
